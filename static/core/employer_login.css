@@ -1,0 +1,124 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    min-height: 100vh;
+}
+
+.page-wrapper {
+    max-width: 420px;
+    margin: 60px auto;
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.school-header {
+    background: #1e3c72;
+    color: #fff;
+    text-align: center;
+    padding: 25px 15px;
+}
+
+.school-header h1 {
+    font-size: 22px;
+    letter-spacing: 1px;
+}
+
+.school-header p {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.login-box {
+    padding: 25px;
+}
+
+.login-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.login-box label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #555;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background: #1e3c72;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.login-box button:hover {
+    background: #16325c;
+}
+
+.error-msg {
+    background: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.info-box {
+    background: #f4f6f9;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.info-box h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.info-box p {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.info-box ul {
+    padding-left: 18px;
+    font-size: 13px;
+    color: #555;
+}
+.create-btn {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px;
+    background: #2a5298;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.create-btn:hover {
+    background: #1e3c72;
+}
