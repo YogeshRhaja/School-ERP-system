@@ -1,0 +1,222 @@
+<div class="top-bar">
+    <button onclick="history.back()" class="back-btn">← Back</button>
+</div>
+
+<h2 class="report-title">Fees Pending Report</h2>
+
+<form method="get" class="filter-box">
+    <label>Class:</label>
+    <select name="class">
+        <option value="">All</option>
+        {% for c in classes %}
+        <option value="{{ c.id }}" {% if selected_class == c.id|stringformat:"s" %}selected{% endif %}>
+            {{ c.class_name }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label>Term:</label>
+    <select name="term">
+        <option value="">All</option>
+        {% for t in terms %}
+        <option value="{{ t.id }}" {% if selected_term == t.id|stringformat:"s" %}selected{% endif %}>
+            {{ t.term_name }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label>Academic Year:</label>
+    <select name="academic_year">
+        <option value="">All</option>
+        {% for y in years %}
+        <option value="{{ y.id }}" {% if selected_year == y.id|stringformat:"s" %}selected{% endif %}>
+            {{ y.year_name }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit" class="filter-btn">Filter</button>
+    <button type="button" class="print-btn" onclick="window.print()">🖨 Print</button>
+</form>
+
+<table class="report-table">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Class</th>
+            <th>Section</th>
+            <th>Academic Year</th>
+            <th>Term</th>
+            <th>Category</th>
+            <th>Total Fee</th>
+            <th>Paid</th>
+            <th>Pending</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in report_data %}
+        <tr>
+            <td>{{ row.student }}</td>
+            <td>{{ row.class }}</td>
+            <td>{{ row.section }}</td>
+            <td>{{ row.academic_year }}</td>
+            <td>{{ row.term }}</td>
+            <td>{{ row.category }}</td>
+            <td>₹{{ row.total_fee }}</td>
+            <td>₹{{ row.paid }}</td>
+            <td class="pending">₹{{ row.pending }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="9" style="text-align:center;">No records found</td></tr>
+        {% endfor %}
+        <tr class="total-row">
+            <td colspan="8" style="text-align:right;">Total Pending Amount</td>
+            <td>₹{{ total_pending }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<style>
+/* --------------------- General --------------------- */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    padding: 20px;
+}
+/* --------------------- Top Bar --------------------- */
+
+.top-bar{
+    margin-bottom:10px;
+}
+
+.back-btn{
+    background:#374151;
+    color:white;
+    border:none;
+    padding:7px 14px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:14px;
+    transition:0.3s;
+}
+
+.back-btn:hover{
+    background:#111827;
+}
+.report-title {
+    color: #4f46e5;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* --------------------- Filter Form --------------------- */
+.filter-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    align-items: center;
+}
+
+.filter-box select,
+.filter-box button {
+    padding: 6px 12px;
+    border-radius: 5px;
+    border: 1px solid #d1d5db;
+}
+
+.filter-btn {
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.filter-btn:hover { background-color: #3730a3; }
+
+.print-btn {
+    background-color: #16a34a;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.print-btn:hover { background-color: #15803d; }
+
+/* --------------------- Table --------------------- */
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    background: #fff;
+}
+
+.report-table th, .report-table td {
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.report-table thead {
+    background-color: #4f46e5;
+    color: white;
+}
+
+.report-table tbody tr:nth-child(even) {
+    background-color: #f3f4f6;
+}
+
+.report-table tbody tr:hover {
+    background-color: #e0e7ff;
+}
+
+.pending {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.total-row {
+    background-color: #eef2ff;
+    font-weight: 600;
+}
+
+/* --------------------- Responsive --------------------- */
+@media (max-width: 768px) {
+    .filter-box {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .report-table {
+        font-size: 12px;
+    }
+}
+
+/* --------------------- Print Styles --------------------- */
+@media print {
+    body {
+        background: white;
+        color: black;
+        padding: 0;
+    }
+    .filter-box,
+    .print-btn {
+        display: none;
+    }
+    .report-table {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+    .report-table th, .report-table td {
+        border: 1px solid #000;
+        padding: 6px;
+    }
+}
+</style>

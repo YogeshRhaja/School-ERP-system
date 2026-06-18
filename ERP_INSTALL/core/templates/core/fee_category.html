@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<h3 style="color:#4f46e5; margin-bottom:20px;">Fee Categories</h3>
+
+<a href="{% url 'fee_category_create' %}" class="btn btn-primary mb-3" style="display:flex; align-items:center; gap:6px;">
+    <i class="fas fa-plus"></i> Add Category
+</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Category Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for c in categories %}
+        <tr>
+            <td>{{ c.category_id }}</td>
+            <td>{{ c.category_name }}</td>
+           <td>
+    <!-- Edit Button with Icon -->
+    <a href="{% url 'fee_category_update' c.category_id %}"
+       class="btn btn-warning btn-sm me-2"
+       title="Edit">
+        <i class="fas fa-edit"></i>
+    </a>
+
+    <!-- Delete Button with Icon -->
+    <a href="{% url 'fee_category_delete' c.category_id %}"
+       class="btn btn-danger btn-sm"
+       title="Delete"
+       onclick="return confirm('Are you sure you want to delete this category?')">
+        <i class="fas fa-trash"></i>
+    </a>
+</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+{% endblock %}

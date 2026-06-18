@@ -1,0 +1,155 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<h2 class="title">Scholarship Report</h2>
+
+<!-- FILTERS -->
+<form method="get" class="filter-box">
+
+    <select name="academic_year">
+        <option value="">All Academic Years</option>
+        {% for y in academic_years %}
+        <option value="{{ y.year_id }}">{{ y.year_name }}</option>
+        {% endfor %}
+    </select>
+
+    <select name="class">
+  <option value="">Select Class</option>
+  {% for c in classes %}
+    <option value="{{ c.school_class__id }}">{{ c.school_class__class_name }}</option>
+  {% endfor %}
+</select>
+
+    <button type="submit" class="btn filter-btn">Filter</button>
+
+</form>
+
+<!-- TABLE -->
+<div class="table-container">
+<table class="report-table">
+
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Scholarship</th>
+            <th>Academic Year</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for s in scholarships %}
+        <tr>
+            <td>{{ s.student.student_name }}</td>
+            <td>{{ s.scholarship.name }}</td>
+            <td>{{ s.academic_year.year_name }}</td>
+            <td>₹{{ s.amount }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No data found</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+</div>
+
+<!-- TOTAL -->
+<h3 class="total">Total Scholarship: ₹{{ total_scholarship }}</h3>
+
+<!-- BUTTONS -->
+<div class="btn-group">
+    <button onclick="window.print()" class="btn print-btn">Print</button>
+    <button onclick="window.location.href='{% url 'reports_dashboard' %}'" class="btn back-btn">Back</button>
+</div>
+
+<!-- CSS -->
+<style>
+
+/* Title */
+.title {
+    color: #4f46e5;
+    margin-bottom: 20px;
+}
+
+/* Filter box */
+.filter-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-box select {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* Table */
+.table-container {
+    overflow-x: auto;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.report-table th {
+    background: #f3f4f6;
+    padding: 12px;
+    text-align: left;
+}
+
+.report-table td {
+    padding: 12px;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Total */
+.total {
+    margin-top: 20px;
+    color: #16a34a;
+}
+
+/* Buttons */
+.btn-group {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+}
+
+.filter-btn {
+    background: #4f46e5;
+}
+
+.print-btn {
+    background: #16a34a;
+}
+
+.back-btn {
+    background: #2563eb;
+}
+
+/* Print mode */
+@media print {
+    .filter-box, .btn-group {
+        display: none;
+    }
+}
+
+</style>
+
+{% endblock %}

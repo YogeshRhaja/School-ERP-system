@@ -1,0 +1,166 @@
+<table class="fee-table">
+<style>
+.fee-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.fee-table th {
+    background: #4f46e5;
+    color: #ffffff;
+    padding: 14px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.fee-table td {
+    padding: 12px;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+}
+
+.paid {
+    color: #16a34a;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.balance {
+    color: #f59e0b; /* changed from red to amber for professional look */
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Input / Select */
+.fee-table input,
+.fee-table select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+}
+
+/* Pay Button */
+.fee-table button {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.fee-table button:hover {
+    background: #3730a3;
+}
+
+/* Paid status with check icon */
+.paid-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #16a34a;
+    font-weight: 600;
+}
+
+/* Optional: icons */
+.paid-status::before {
+    content: "\2714"; /* ✔ */
+    font-weight: bold;
+}
+
+.balance::before {
+    content: "\23F3"; /* ⏳ waiting / balance icon */
+}
+
+.fee-table button::before {
+    content: "\f09d"; /* Font Awesome credit card icon */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 14px;
+}
+</style>
+
+<!-- Font Awesome CDN for button icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<thead>
+<tr>
+<th>Term</th>
+<th>Total</th>
+<th>Paid</th>
+<th>Balance</th>
+<th>Pay</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for term, data in term_data.items %}
+
+<tr>
+
+<td>{{ term }}</td>
+
+<td>₹{{ data.total }}</td>
+
+<td class="paid">₹{{ data.paid }}</td>
+
+<td class="balance">₹{{ data.balance }}</td>
+
+<td>
+
+{% if data.balance > 0 %}
+
+<form method="post" action="{% url 'process_fee_payment' %}">
+
+{% csrf_token %}
+
+<input type="hidden" name="enrollment_id" value="{{ enrollment.id }}">
+
+<input type="number"
+name="amount_paid"
+value="{{ data.balance }}"
+max="{{ data.balance }}"
+required>
+
+<select name="payment_mode">
+
+<option value="Cash">Cash</option>
+<option value="Online">Online</option>
+<option value="UPI">UPI</option>
+
+</select>
+
+<button type="submit">Pay</button>
+
+</form>
+
+{% else %}
+
+<span class="paid-status">Paid</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>

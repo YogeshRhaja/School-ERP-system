@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<h3 style="color:#4f46e5; margin-bottom:20px;">Fee Category</h3>
+
+<form method="POST" style="max-width:500px;">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <div style="display:flex; gap:10px; margin-top:15px;">
+        <button class="btn btn-success" style="
+            display:flex;
+            align-items:center;
+            gap:6px;
+            background:#4f46e5;
+            border:none;
+            padding:8px 16px;
+            border-radius:6px;
+            font-weight:500;
+            cursor:pointer;
+            transition:0.2s;
+        ">
+            <i class="fas fa-save"></i> Save
+        </button>
+
+        <a href="{% url 'fee_category_list' %}" style="
+            display:flex;
+            align-items:center;
+            gap:6px;
+            padding:8px 16px;
+            border-radius:6px;
+            background:#6b7280;
+            color:white;
+            text-decoration:none;
+            font-weight:500;
+            transition:0.2s;
+        ">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
+</form>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+{% endblock %}

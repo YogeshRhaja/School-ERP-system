@@ -1,0 +1,86 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- Step 1: Navigation Buttons -->
+    <div class="mb-4">
+        <a href="{% url 'manage_class_section' %}?form=add_class" class="btn btn-success {% if form_type == 'add_class' %}active{% endif %}">
+            Add Class
+        </a>
+        <a href="{% url 'manage_class_section' %}?form=add_section" class="btn btn-primary {% if form_type == 'add_section' %}active{% endif %}">
+            Add Section
+        </a>
+        <a href="{% url 'manage_class_section' %}?form=assign_section" class="btn btn-warning {% if form_type == 'assign_section' %}active{% endif %}">
+            Assign Section to Class
+        </a>
+    </div>
+
+    <div class="row">
+
+        <!-- ADD CLASS FORM -->
+        {% if form_type == "add_class" %}
+        <div class="col-md-6 offset-md-3">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white text-center">
+                    <h4>Add Class</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ class_form.as_p }}
+                        <button type="submit" name="action" value="add_class" class="btn btn-success w-100">
+                            Add Class
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- ADD SECTION FORM -->
+        {% if form_type == "add_section" %}
+        <div class="col-md-6 offset-md-3">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Add Section</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ section_form.as_p }}
+                        <button type="submit" name="action" value="add_section" class="btn btn-primary w-100">
+                            Add Section
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- ASSIGN SECTION TO CLASS FORM -->
+        {% if form_type == "assign_section" %}
+        <div class="col-md-6 offset-md-3">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning text-dark text-center">
+                    <h4>Assign Section to Class</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ class_section_form.as_p }}
+                        <button type="submit" name="action" value="assign_section" class="btn btn-warning w-100">
+                            Assign Section
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

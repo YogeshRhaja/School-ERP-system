@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+
+        <!-- ADD CLASS -->
+        <div class="col-md-4">
+            <div style="background:white;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);">
+                <h4 class="text-center mb-3">Add Class</h4>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ class_form.as_p }}
+                    <button type="submit" name="action" value="add_class" class="btn btn-success w-100">
+                        Add Class
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ADD SECTION -->
+        <div class="col-md-4">
+            <div style="background:white;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);">
+                <h4 class="text-center mb-3">Add Section</h4>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ section_form.as_p }}
+                    <button type="submit" name="action" value="add_section" class="btn btn-primary w-100">
+                        Add Section
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- MAP CLASS + SECTION -->
+        <div class="col-md-4">
+            <div style="background:white;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);">
+                <h4 class="text-center mb-3">Assign Section to Class</h4>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ class_section_form.as_p }}
+                    <button type="submit" name="action" value="assign_section" class="btn btn-warning w-100">
+                        Assign Section
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

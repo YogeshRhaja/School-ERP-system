@@ -1,0 +1,22 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+<h2>Edit Section</h2>
+
+<p><strong>Student:</strong> {{ enrollment.student }}</p>
+<p><strong>Class:</strong> {{ enrollment.class_section.school_class.class_name }}</p>
+<p><strong>Current Section:</strong> {{ enrollment.class_section.section.section_name }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <div>
+        <label><strong>Change Section:</strong></label><br>
+        {{ form.section }}
+    </div>
+
+    <br>
+    <button type="submit" class="btn btn-primary">Update</button>
+</form>
+{% endblock %}

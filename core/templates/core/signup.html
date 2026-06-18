@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up | ABC School</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/employer_login.css' %}">
+</head>
+<body>
+<div class="page-wrapper">
+    <header class="school-header">
+        <h1>ABC PUBLIC SCHOOL</h1>
+        <p>Sign Up Portal</p>
+    </header>
+
+    <div class="login-box">
+        <h2>Sign Up</h2>
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="error-msg">{{ msg }}</div>
+            {% endfor %}
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <label>Username</label>
+            <input type="text" name="username" required>
+
+            <label>Password</label>
+            <input type="password" name="password" required>
+
+            <label>Confirm Password</label>
+            <input type="password" name="confirm_password" required>
+
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    </div>
+</div>
+</body>
+</html>

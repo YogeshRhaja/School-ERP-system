@@ -1,0 +1,70 @@
+<!-- core/templates/core/scholarship_posting.html -->
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Manual Scholarship Posting</h2>
+
+    <!-- Form -->
+    <div class="card p-3 mb-4">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-md-3">
+                    {{ form.academic_year.label_tag }}
+                    {{ form.academic_year }}
+                </div>
+                <div class="col-md-3">
+                    {{ form.student_no.label_tag }}
+                    {{ form.student_no }}
+                </div>
+                <div class="col-md-3">
+                    {{ form.scholarship.label_tag }}
+                    {{ form.scholarship }}
+                </div>
+                <div class="col-md-2">
+                    {{ form.amount.label_tag }}
+                    {{ form.amount }}
+                </div>
+                <div class="col-md-1 d-flex align-items-end">
+                    <button type="submit" class="btn btn-success w-100">Post</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Posted Scholarships Table -->
+    <div class="card p-3">
+        <h4>Posted Scholarships</h4>
+        <table class="table table-bordered table-striped mt-2">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Student No</th>
+                    <th>Student Name</th>
+                    <th>Academic Year</th>
+                    <th>Scholarship Type</th>
+                    <th>Amount (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in scholarships %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ s.student.student_no }}</td>
+                    <td>{{ s.student.student_name }}</td>
+                    <td>{{ s.academic_year.year_name }}</td>
+                    <td>{{ s.scholarship.name }}</td>
+                    <td>₹{{ s.amount }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No scholarships posted yet</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

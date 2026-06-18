@@ -1,0 +1,212 @@
+<button onclick="history.back()" class="back-btn">← Back</button>
+
+<h2>Fees Payment Between Dates</h2>
+
+<form method="get" class="filter-form">
+    Start Date: <input type="date" name="start_date" value="{{ start_date }}">
+    End Date: <input type="date" name="end_date" value="{{ end_date }}">
+
+    Payment Mode:
+    <select name="payment_mode">
+        <option value="">All</option>
+        {% for mode in payment_modes %}
+            <option value="{{ mode }}" {% if mode == selected_mode %}selected{% endif %}>{{ mode }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Filter</button>
+</form>
+
+<!-- Print Button -->
+<button class="print-btn" onclick="window.print()">🖨 Print Report</button>
+
+<table class="fees-table">
+    <thead>
+        <tr>
+            <th>Payment Date</th>
+            <th>Student</th>
+            <th>Class</th>
+            <th>Section</th>
+            <th>Academic Year</th>
+            <th>Term</th>
+            <th>Category</th>
+            <th>Amount Paid</th>
+            <th>Payment Mode</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in payments %}
+        <tr>
+            <td>{{ p.payment_date }}</td>
+            <td>{{ p.enrollment.student.student_name }}</td>
+            <td>{{ p.enrollment.class_section.school_class.class_name }}</td>
+            <td>{{ p.enrollment.class_section.section.section_name }}</td>
+            <td>{{ p.enrollment.academic_year.year_name }}</td>
+            <td>{{ p.fee_structure.term.term_name }}</td>
+            <td>{{ p.fee_structure.category.category_name }}</td>
+            <td>{{ p.amount_paid }}</td>
+            <td>{{ p.payment_mode }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="9">No records found</td></tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="7">Total Amount Paid</td>
+            <td>{{ total_paid }}</td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
+
+<style>
+/* --------------------- General --------------------- */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    padding: 20px;
+}
+/* --------------------- Back Button --------------------- */
+.back-btn {
+    display: inline-block;
+    margin-bottom: 15px;
+    padding: 8px 16px;
+    background-color: #6b7280;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+    background-color: #374151;
+}
+h2 {
+    color: #4f46e5;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* --------------------- Filter Form --------------------- */
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    align-items: center;
+}
+
+.filter-form input,
+.filter-form button {
+    padding: 6px 12px;
+    border-radius: 5px;
+    border: 1px solid #d1d5db;
+}
+
+.filter-form button {
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.filter-form button:hover {
+    background-color: #3730a3;
+}
+
+/* --------------------- Print Button --------------------- */
+.print-btn {
+    display: inline-block;
+    margin-bottom: 15px;
+    padding: 8px 16px;
+    background-color: #10b981;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.print-btn:hover { background-color: #059669; }
+
+/* --------------------- Table --------------------- */
+.fees-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    background: #fff;
+}
+
+.fees-table th, .fees-table td {
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.fees-table thead {
+    background-color: #4f46e5;
+    color: white;
+}
+
+.fees-table tbody tr:nth-child(even) {
+    background-color: #f3f4f6;
+}
+
+.fees-table tbody tr:hover {
+    background-color: #e0e7ff;
+}
+
+.fees-table tfoot td {
+    font-weight: bold;
+    background-color: #f3f4f6;
+}
+
+/* --------------------- Empty Table --------------------- */
+.fees-table tbody tr td[colspan] {
+    text-align: center;
+    font-style: italic;
+    color: #6b7280;
+}
+
+/* --------------------- Responsive --------------------- */
+@media (max-width: 768px) {
+    .filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .fees-table {
+        font-size: 12px;
+    }
+}
+
+/* --------------------- Print Styles --------------------- */
+@media print {
+    body {
+        background: white;
+        color: black;
+        padding: 0;
+    }
+    .filter-form,
+    .print-btn {
+        display: none;
+    }
+    .fees-table {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+    .fees-table th,
+    .fees-table td {
+        border: 1px solid #000;
+        padding: 6px;
+    }
+}
+</style>

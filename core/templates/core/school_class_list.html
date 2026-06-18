@@ -1,0 +1,87 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- Add Class Button -->
+    <a href="{% url 'school_class_add' %}" class="btn btn-success mb-3">
+        <i class="fa-solid fa-plus"></i> Add New Class
+    </a>
+
+    <!-- Classes Table -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Class Name</th>
+                            <th style="width:120px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cls in classes %}
+                        <tr>
+                            <td>{{ cls.class_name }}</td>
+                            <td>
+                                <a href="{% url 'school_class_edit' cls.pk %}" class="btn btn-primary btn-sm">
+                                    <i class="fa-solid fa-pen-to-square"></i> Edit
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2" class="text-center text-muted py-4">
+                                No classes added yet
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+/* --- Buttons --- */
+.btn-success, .btn-primary {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+.btn-success:hover {
+    background-color: #218838;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* --- Table --- */
+.table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+.table thead {
+    background-color: #f3f4f6;
+}
+.table-hover tbody tr:hover {
+    background-color: #f9fafb;
+    transition: background 0.2s;
+}
+.table td, .table th {
+    vertical-align: middle;
+    padding: 12px 15px;
+}
+
+/* --- Card --- */
+.card {
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+</style>
+
+{% endblock %}

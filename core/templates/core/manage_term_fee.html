@@ -1,0 +1,122 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<style>
+/* Page Titles */
+h3 {
+    color: #4f46e5;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+h5 {
+    color: #1f2937;
+    font-weight: 500;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+/* Forms */
+form {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+}
+
+form .btn {
+    background-color: #16a34a;
+    color: white;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 6px;
+    border: none;
+    transition: all 0.2s;
+}
+
+form .btn:hover {
+    opacity: 0.9;
+}
+
+/* Tables */
+.table {
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.table th {
+    background-color: #f3f4f6;
+    font-weight: 600;
+    color: #374151;
+}
+
+.table td {
+    color: #1f2937;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #e5e7eb;
+}
+
+/* Row hover effect */
+.table-hover tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+/* Horizontal lines */
+hr {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 25px 0;
+}
+</style>
+<h3>
+Fee Structure :
+{{ fee_structure.year }} -
+{{ fee_structure.school_class }}
+</h3>
+
+<hr>
+
+<h5>Add Term Fee</h5>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button class="btn btn-success">
+        Add Term Fee
+    </button>
+</form>
+
+<hr>
+
+<h5>Term Wise Fees</h5>
+
+<table class="table table-bordered">
+
+<thead>
+<tr>
+    <th>Term</th>
+    <th>Category</th>
+    <th>Amount</th>
+</tr>
+</thead>
+
+<tbody>
+{% for tf in term_fees %}
+<tr>
+    <td>{{ tf.term }}</td>
+    <td>{{ tf.category }}</td>
+    <td>{{ tf.amount }}</td>
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<h4>Add Fee Structure</h4>
+
+<form method="POST">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-success">
+        Save Fee Structure
+    </button>
+
+    <a href="{% url 'fee_structure_list' %}"
+       class="btn btn-secondary">
+        Cancel
+    </a>
+</form>
+
+{% endblock %}

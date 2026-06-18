@@ -1,0 +1,235 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<style>
+/* ==========================
+   General Form Card
+========================== */
+.employee-form {
+    max-width: 900px;
+    margin: 30px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.employee-form:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+}
+
+.employee-form h3 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #4f46e5;
+    font-weight: 700;
+}
+
+/* ==========================
+   Grid Layout for Form
+========================== */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 25px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #1f2937;
+}
+.form-group input,
+.form-group select {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px rgba(79,70,229,0.15);
+}
+
+/* File input adjustment */
+.form-group input[type="file"] {
+    padding: 5px;
+}
+
+/* ==========================
+   Form Actions
+========================== */
+.form-actions {
+    text-align: center;
+    margin-top: 30px;
+}
+.form-actions button {
+    background-color: #16a34a;
+    color: #fff;
+    padding: 10px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+}
+.form-actions button:hover {
+    background-color: #15803d;
+}
+
+/* ==========================
+   Responsive
+========================== */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Optional: Uniform height for inputs */
+.form-group input, .form-group select {
+    height: 38px;
+}
+
+/* Optional: placeholder color */
+.form-group input::placeholder {
+    color: #9ca3af;
+}
+</style>
+
+<form method="post" enctype="multipart/form-data" class="employee-form">
+    {% csrf_token %}
+
+    <h3>👨‍💼 Add Employee</h3>
+
+    <div class="form-grid">
+
+        <div class="form-group">
+            <label>Employee ID</label>
+            {{ form.employee_id }}
+        </div>
+
+        <div class="form-group">
+            <label>Employee Name</label>
+            {{ form.employee_name }}
+        </div>
+
+        <div class="form-group">
+            <label>Gender</label>
+            {{ form.gender }}
+        </div>
+
+        <div class="form-group">
+            <label>Mobile No</label>
+            {{ form.mobile_no }}
+        </div>
+
+        <div class="form-group">
+            <label>Alternate Mobile No</label>
+            {{ form.alternate_mobile_no }}
+        </div>
+
+        <div class="form-group">
+            <label>Employee Designation</label>
+            {{ form.designation }}
+        </div>
+
+        <div class="form-group">
+            <label>Employee Photo</label>
+            {{ form.employee_photo }}
+        </div>
+
+        <div class="form-group">
+            <label>Date of Joining</label>
+            {{ form.date_of_joining }}
+        </div>
+
+        <div class="form-group">
+            <label>Door No</label>
+            {{ form.door_no }}
+        </div>
+
+        <div class="form-group">
+            <label>Street Name</label>
+            {{ form.street_name }}
+        </div>
+
+        <div class="form-group">
+            <label>Town / Village</label>
+            {{ form.town }}
+        </div>
+
+        <div class="form-group">
+            <label>Country</label>
+            {{ form.country }}
+        </div>
+
+        <div class="form-group">
+            <label>State</label>
+            {{ form.state }}
+        </div>
+
+        <div class="form-group">
+            <label>District</label>
+            {{ form.district }}
+        </div>
+
+        <div class="form-group">
+            <label>Pincode</label>
+            {{ form.pincode }}
+        </div>
+
+        <div class="form-group">
+            <label>Access Rights</label>
+            {{ form.access_rights }}
+        </div>
+
+        <div class="form-group">
+            <label>Login Password</label>
+            {{ form.password }}
+        </div>
+
+    </div>
+
+    <div class="form-actions">
+        <button type="submit">💾 Save Employee</button>
+    </div>
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const stateDropdown = document.getElementById("id_state");
+    const districtDropdown = document.getElementById("id_district");
+
+    if (!stateDropdown || !districtDropdown) return;
+
+    stateDropdown.addEventListener("change", function () {
+        const stateId = this.value;
+        districtDropdown.innerHTML = '<option value="">Loading...</option>';
+        fetch(`/load-districts/?state_id=${stateId}`)
+            .then(response => response.json())
+            .then(data => {
+                districtDropdown.innerHTML = '<option value="">Select District</option>';
+                data.forEach(function(district) {
+                    const option = document.createElement("option");
+                    option.value = district.district_id;
+                    option.text = district.district_name;
+                    districtDropdown.appendChild(option);
+                });
+            });
+    });
+});
+</script>
+{% endblock %}

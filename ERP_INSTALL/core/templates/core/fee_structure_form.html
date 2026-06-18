@@ -1,0 +1,85 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<style>
+/* Form Container */
+form {
+    background: #ffffff;
+    padding: 25px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    max-width: 600px;
+    margin-top: 20px;
+}
+
+/* Headings */
+h4 {
+    color: #4f46e5;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Inputs */
+form input, form select {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+form input:focus, form select:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+    outline: none;
+}
+
+/* Buttons */
+form .btn {
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+form .btn-success {
+    background-color: #16a34a;
+    color: white;
+    border: none;
+}
+
+form .btn-success:hover {
+    background-color: #15803d;
+}
+
+form .btn-secondary {
+    background-color: #6b7280;
+    color: white;
+    border: none;
+    margin-left: 10px;
+}
+
+form .btn-secondary:hover {
+    background-color: #4b5563;
+}
+</style>
+<h4>Add Fee Structure</h4>
+
+<form method="POST">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-success">
+        Save Fee Structure
+    </button>
+
+    <a href="{% url 'fee_structure_list' %}" 
+       class="btn btn-secondary">
+        Cancel
+    </a>
+</form>
+
+{% endblock %}

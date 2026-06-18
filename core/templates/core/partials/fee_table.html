@@ -1,0 +1,537 @@
+<style>
+    /* --- Container Fix (VERY IMPORTANT) --- */
+#fees_area {
+    width: 100%;
+    overflow-x: auto; /* ✅ enables horizontal scroll instead of breaking layout */
+}
+
+/* --- Fee Table --- */
+.fee-table {
+    width: 100%;
+    min-width: 700px; /* ✅ prevents squeezing */
+    border-collapse: collapse;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* --- Payment Grid Fix --- */
+.payment-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* equal columns */
+    gap: 10px;
+    width: 100%;
+}
+
+/* --- Pay Box --- */
+.pay-box {
+    width: 100%;
+}
+
+.pay-box input {
+    width: 100%; /* ✅ prevent overflow */
+}
+
+/* --- Pay Button Fix --- */
+.pay-button {
+    display: flex;
+    align-items: flex-end;
+}
+
+.pay-btn {
+    width: 100%; /* full width on small screens */
+}
+
+/* --- Responsive Fix --- */
+@media (max-width: 768px) {
+
+    .payment-grid {
+        grid-template-columns: 1fr; /* stack inputs */
+    }
+
+    .fee-table {
+        min-width: 600px; /* allow scroll */
+    }
+
+    .term-tabs {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .term-btn {
+        flex: 0 0 auto;
+    }
+}
+/* --- Header --- */
+.fee-header {
+    margin-bottom: 20px;
+}
+.student-item {
+    cursor: pointer;
+    font-weight: 600;
+    color: #4f46e5;
+    padding: 6px 0;
+    transition: color 0.2s;
+}
+.student-item.active {
+    color: #1e3a8a;
+    border-bottom: 2px solid #4f46e5;
+}
+.payment-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap:15px;
+    align-items:end;
+    margin-top:10px;
+}
+
+.pay-box{
+    display:flex;
+    flex-direction:column;
+}
+
+.pay-box label{
+    font-weight:600;
+    margin-bottom:4px;
+}
+
+.pay-box input{
+    padding:8px;
+    border-radius:6px;
+    border:1px solid #cbd5e1;
+}
+
+.pay-button{
+    display:flex;
+    align-items:flex-end;
+}
+
+/* --- Term Tabs --- */
+.term-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+.term-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #e5e7eb;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+.term-btn:hover {
+    background: #d1d5db;
+}
+.term-btn.active {
+    background: #4f46e5;
+    color: #ffffff;
+}
+
+/* --- Fee Table --- */
+.fee-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    border-radius: 10px;
+    overflow: hidden;
+}
+.fee-table th, .fee-table td {
+    padding: 12px 15px;
+}
+.fee-table th {
+    background: #f3f4f6;
+    text-align: left;
+    font-weight: 600;
+}
+.fee-table td {
+    border-top: 1px solid #e5e7eb;
+}
+
+/* --- Amount Colors with Icons --- */
+.amount-total {
+    color: #4f46e5; /* blue for total */
+    font-weight: 600;
+}
+.amount-total::before {
+    content: "\f0d6"; /* money icon */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 4px;
+}
+
+.amount-paid {
+    color: #16a34a; /* green for paid */
+    font-weight: 600;
+}
+.amount-paid::before {
+    content: "\f00c"; /* check icon */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 4px;
+}
+
+.amount-balance {
+    color: #0d6efd; /* blue for balance instead of red */
+    font-weight: 600;
+}
+.amount-balance::before {
+    content: "\f53a"; /* coins icon */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 4px;
+}
+/* --- Payment Form --- */
+.pay-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+.pay-form input[type="number"],
+.pay-form select {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.pay-form input[type="number"]:focus,
+.pay-form select:focus {
+    border-color: #4f46e5;
+}
+.pay-btn {
+    background: #16a34a;
+    color: #ffffff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+.pay-btn:hover {
+    background: #15803d;
+}
+.pay-btn:disabled {
+    background: #a7f3d0;
+    cursor: not-allowed;
+}
+
+.receipt-btn {
+    background: #4f46e5;
+    color: #ffffff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 12px;
+    transition: background 0.2s;
+}
+.receipt-btn:hover {
+    background: #4338ca;
+}
+
+/* --- Term Total Row --- */
+.term-total {
+    background: #f9fafb;
+    font-weight: 600;
+}
+.term-total td {
+    padding: 10px 12px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .pay-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .term-tabs {
+        justify-content: flex-start;
+    }
+}
+</style>
+
+
+<!-- Student Header -->
+<div class="fee-header">
+    <h4 class="student-item active"
+        data-id="{{ enrollment.id }}"
+        style="cursor:pointer; color:#4f46e5;">
+        {{ enrollment.student.student_name }}
+    </h4>
+</div>
+
+
+<!-- Term Tabs -->
+<div class="term-tabs">
+{% for t in terms %}
+<button class="term-btn term-select {% if t.term__id|stringformat:'s' == term_id|stringformat:'s' %}active{% endif %}"
+        data-term="{{ t.term__id }}">
+    {{ t.term__term_name }}
+</button>
+{% endfor %}
+</div>
+
+<div id="payment-message" style="display:none; padding:10px; margin-bottom:15px; border-radius:6px;"></div>
+<!-- Fees Area -->
+<div id="fees_area">
+
+{% if fees %}
+
+<table class="fee-table">
+
+<thead>
+<tr>
+    <th>Category</th>
+    <th>Scholarship</th>
+    <th>Total</th>
+    <th>Paid</th>
+    <th>Balance</th>
+</tr>
+</thead>
+
+<tbody>
+{% for cat in fees %}
+<tr>
+    <td>{{ cat.category }}</td>
+    <td class="amount-paid">₹{{ cat.scholarship_applied|default:"0.00" }}</td>
+    <td class="amount-total">₹{{ cat.total }}</td>
+    <td class="amount-paid">₹{{ cat.paid }}</td>
+    <td class="amount-balance">₹{{ cat.balance }}</td>
+</tr>
+{% endfor %}
+
+<tr class="term-total">
+    <td><b>Total</b></td>
+    <td class="amount-paid">₹{{ total_scholarship|default:"0.00" }}</td>
+    <td class="amount-total">₹{{ total }}</td>
+    <td class="amount-paid">₹{{ paid_total }}</td>
+    <td class="amount-balance">₹{{ balance_total }}</td>
+</tr>
+
+<!-- Payment Row -->
+<tr class="term-total">
+<td colspan="4">
+
+<form method="post" action="{% url 'process_fee_payment' %}" class="pay-form">
+
+{% csrf_token %}
+
+<input type="hidden" name="enrollment_id" value="{{ enrollment.id }}">
+<input type="hidden" name="term_id" id="term_id" value="{{ term_id }}">
+  <input type="hidden" name="academic_year_id" id="academic_year_id" value="{{ academic_year.year_id }}">
+
+<div class="payment-grid">
+
+<div class="pay-box">
+<label>Cash</label>
+<input type="number" name="cash_amount" min="0" step="0.01" value="0">
+</div>
+
+<div class="pay-box">
+<label>UPI</label>
+<input type="number" name="upi_amount" min="0" step="0.01" value="0">
+</div>
+
+<div class="pay-box">
+<label>Card</label>
+<input type="number" name="card_amount" min="0" step="0.01" value="0">
+</div>
+
+<div class="pay-button">
+<button type="submit" class="pay-btn">Pay</button>
+</div>
+
+</div>
+
+</form>
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+
+{% if paid_total > 0 %}
+<button class="receipt-btn"
+        onclick="printReceipt('{{ enrollment.payments.first.receipt_no }}')">
+        Receipt
+</button>
+{% endif %}
+
+{% endif %}
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+$(document).ready(function(){
+
+// ----------------------
+// GLOBAL STATE
+// ----------------------
+var activeTermId = null;
+var paymentProcessing = false;
+
+
+// ----------------------
+// LOAD FEES FUNCTION (FIXED)
+// ----------------------
+function loadFees(enrollment_id, term_id, academic_year_id){
+    $.ajax({
+        url: "{% url 'load_fees' %}",
+        data: {
+            enrollment_id: enrollment_id,
+            term_id: term_id,
+            academic_year_id: academic_year_id
+        },
+        success: function(data){
+            $("#fees_area").html(data.html);
+        },
+        error: function(xhr){
+            console.error("Load fees error:", xhr.responseText);
+        }
+    });
+}
+
+
+// ----------------------
+// Initialize active term
+// ----------------------
+function updateActiveTerm(){
+    activeTermId = $(".term-btn.active").data("term") || null;
+    $("#term_id").val(activeTermId);
+}
+
+updateActiveTerm();
+
+
+// ----------------------
+// Student click
+// ----------------------
+$(document).on("click",".student-item",function(){
+
+    $(".student-item").removeClass("active");
+    $(this).addClass("active");
+
+    let enrollment_id = $(this).data("id");
+
+    if(!activeTermId){
+        activeTermId = $(".term-btn.active").data("term");
+    }
+
+    let academic_year_id = $("#academic_year_id").val();
+    loadFees(enrollment_id, activeTermId, academic_year_id);
+
+});
+
+
+// ----------------------
+// Term click
+// ----------------------
+$(document).on("click",".term-select",function(){
+
+    $(".term-btn").removeClass("active");
+    $(this).addClass("active");
+
+    activeTermId = $(this).data("term");
+
+    let enrollment_id = $(".student-item.active").data("id");
+
+    if(!enrollment_id){
+        alert("Please select a student first");
+        return;
+    }
+
+    let academic_year_id = $(".student-item.active").data("academic-year");
+
+    loadFees(enrollment_id, activeTermId, academic_year_id);
+
+});
+
+
+// ----------------------
+// Payment submit
+// ----------------------
+$(document).on("submit",".pay-form",function(e){
+    e.preventDefault(); // ✅ prevent normal form submit
+
+    let $form = $(this);
+    let $btn = $form.find(".pay-btn");
+
+    if ($btn.data("submitted")) return; // prevent double click
+    $btn.data("submitted", true).prop("disabled", true);
+
+    let enrollment_id = $form.find("input[name='enrollment_id']").val();
+    let academic_year_id = $form.find("input[name='academic_year_id']").val();
+    let formData = $form.serialize() + "&term_id=" + activeTermId;
+
+    $.ajax({
+        url: $form.attr("action"),
+        type: "POST",
+        data: formData,
+        success: function(data){
+            if(data.success){
+                // ✅ Show success message dynamically
+                $("#payment-message")
+                    .html(`Payment Successful!
+                           Scholarship: ₹${data.scholarship_used || 0},
+                           Remaining: ₹${data.remaining_scholarship || 0}`)
+                    .css({
+                        display:"block",
+                        background:"#dcfce7",
+                        color:"#166534",
+                        border:"1px solid #16a34a"
+                    });
+
+                setTimeout(() => $("#payment-message").fadeOut(), 4000);
+
+                // ✅ Add receipt button dynamically
+                $(".receipt-btn").remove(); // remove old if any
+                $("#fees_area").append(`
+                    <button class="receipt-btn"
+                        onclick="window.open('/core/receipt/?payment_id=${data.receipt_no}','_blank')">
+                        Receipt
+                    </button>
+                `);
+
+                // ✅ Reload fee table if needed
+                loadFees(enrollment_id, activeTermId, academic_year_id);
+            } else {
+                alert(data.message);
+            }
+
+            // ✅ Re-enable button after response
+            $btn.data("submitted", false).prop("disabled", false);
+        },
+        error: function(xhr){
+            console.error("Payment error:", xhr.responseText);
+            $btn.data("submitted", false).prop("disabled", false);
+        }
+    });
+});
+
+// ----------------------
+// Receipt button
+// ----------------------
+window.printReceipt = function(paymentId){
+
+    if(!paymentId){
+        alert("No receipt available");
+        return;
+    }
+
+    window.open(`/core/receipt/?payment_id=${paymentId}`,"_blank");
+};
+
+});
+</script>

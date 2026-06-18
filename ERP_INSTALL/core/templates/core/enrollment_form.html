@@ -1,0 +1,189 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+.enroll-card { background: #ffffff; padding: 25px; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+.section-card { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); margin-bottom: 20px; }
+.table th { background-color: #343a40; color: white; text-align: center; }
+.table td { text-align: center; vertical-align: middle; }
+</style>
+
+<div class="enroll-card">
+<h3 class="mb-4">Student Enrollment</h3>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+<!-- MODE TOGGLE -->
+<form method="get" class="mb-4">
+    <div class="btn-group">
+        <input type="radio" class="btn-check" name="mode" value="INDIVIDUAL" id="mode1" {% if mode == 'INDIVIDUAL' %}checked{% endif %}>
+        <label class="btn btn-outline-primary" for="mode1">Individual</label>
+        <input type="radio" class="btn-check" name="mode" value="CLASS" id="mode2" {% if mode == 'CLASS' %}checked{% endif %}>
+        <label class="btn btn-outline-primary" for="mode2">Class</label>
+    </div>
+    <button type="submit" class="btn btn-primary btn-sm ms-3">Apply</button>
+</form>
+
+<!-- INDIVIDUAL MODE -->
+{% if mode == 'INDIVIDUAL' %}
+    {% if form %}
+    <form method="post">{% csrf_token %}
+    <div class="section-card">
+        <h5 class="mb-3">Select Students</h5>
+        <table class="table table-bordered table-hover">
+            <thead>
+<tr>
+    <th width="80">
+        <input type="checkbox" id="selectAll">
+    </th>
+    <th>Student No</th>
+    <th>Name</th>
+</tr>
+</thead>
+            <tbody>
+                {% for s in students %}
+                <tr>
+                    <td><input type="checkbox" name="student" value="{{ s.student_id }}"></td>
+                    <td>{{ s.student_no }}</td>
+                    <td>{{ s.student_name }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3">No students available</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <label class="form-label">Academic Year</label>
+                {{ form.academic_year }}
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Class</label>
+                {{ form.school_class }}
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Section</label>
+                {{ form.section }}
+            </div>
+            <div class="col-md-12 d-grid mt-3">
+                <button type="submit" class="btn btn-success">Enroll Selected Students</button>
+            </div>
+        </div>
+    </div>
+    </form>
+    {% endif %}
+{% endif %}
+
+<!-- CLASS MODE -->
+{% if mode == 'CLASS' %}
+    <form method="post">{% csrf_token %}
+    <div class="section-card">
+        <h5 class="mb-3">Select Enrollments to Promote</h5>
+        <table class="table table-bordered table-hover">
+            <thead>
+<tr>
+    <th width="80">
+        <input type="checkbox" id="selectAllEnrollments">
+    </th>
+    <th>Student No</th>
+    <th>Name</th>
+    <th>Year</th>
+    <th>Class - Section</th>
+</tr>
+</thead>
+            <tbody>
+                {% for e in enrollments %}
+                <tr>
+                    <td><input type="checkbox" name="enrollment_ids" value="{{ e.id }}"></td>
+                    <td>{{ e.student.student_no }}</td>
+                    <td>{{ e.student.student_name }}</td>
+                    <td>{{ e.academic_year.year_name }}</td>
+                    <td>{{ e.class_section.school_class.class_name }} - {{ e.class_section.section.section_name }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5">No students found</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="section-card">
+    <h5 class="mb-3">Promote To</h5>
+    <div class="row">
+        <div class="col-md-4">
+            <label class="form-label">New Academic Year</label>
+            {{ form.to_year }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">New Class</label>
+            {{ form.school_class }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">New Section</label>
+            {{ form.section }}
+        </div>
+        <div class="col-md-12 d-grid mt-3">
+            <button type="submit" class="btn btn-success">Promote Selected Students</button>
+        </div>
+    </div>
+</div>
+    </form>
+{% endif %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function loadSections(class_id, sectionSelectId) {
+    const sectionSelect = $(sectionSelectId);
+    sectionSelect.html('<option value="">Select Section</option>');
+    if (!class_id) return;
+    $.ajax({
+        url: "{% url 'load_sections' %}",
+        type: 'GET',
+        data: {'class_id': class_id},
+        success: function(data) {
+            if (data.sections) {
+                data.sections.forEach(function(sec) {
+                    sectionSelect.append(`<option value="${sec.id}">${sec.section_name}</option>`);
+                });
+            }
+        },
+        error: function() { console.log('Sections load failed'); }
+    });
+}
+
+$(document).ready(function(){
+
+    // Select all students (individual mode)
+    $('#selectAll').click(function(){
+        $('input[name="student"]').prop('checked', this.checked);
+    });
+
+    // Select all enrollments (class promotion)
+    $('#selectAllEnrollments').click(function(){
+        $('input[name="enrollment_ids"]').prop('checked', this.checked);
+    });
+
+    {% if mode == 'INDIVIDUAL' and form.school_class %}
+    $('#{{ form.school_class.id_for_label }}').change(function(){
+        loadSections($(this).val(), '#{{ form.section.id_for_label }}');
+    });
+    {% endif %}
+
+    $('#school_class_promote, #id_school_class').change(function(){
+        loadSections($(this).val(), '#section_promote, #id_section');
+    });
+
+});
+    setTimeout(function(){
+    $(".alert").fadeOut("slow");
+}, 5000);
+</script>
+
+
+{% endblock %}

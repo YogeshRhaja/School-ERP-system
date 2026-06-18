@@ -1,0 +1,46 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ page_title }}</h2>
+
+    <!-- ADD SCHOLARSHIP FORM -->
+    <div class="card p-3 mb-4">
+        <h5>Add New Scholarship</h5>
+        <form method="post" class="mt-2">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+            </div>
+            <button type="submit" class="btn btn-primary">Add Scholarship</button>
+        </form>
+    </div>
+
+    <!-- SCHOLARSHIP LIST -->
+    <div class="card p-3">
+        <h5>Existing Scholarships</h5>
+        <table class="table table-bordered table-striped mt-2">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Scholarship Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sch in scholarships %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ sch.name }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="2">No scholarships found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

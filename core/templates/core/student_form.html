@@ -1,0 +1,293 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<style>
+/* --- Card --- */
+.card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: none;
+}
+
+/* --- Card Header --- */
+.card-header {
+    background-color: #4f46e5; /* primary deep blue */
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: none;
+}
+
+/* --- Section Headings --- */
+h5 {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+h5.text-primary::before {
+    content: "\f046"; /* Font Awesome icon for info/check */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: #4f46e5;
+}
+
+/* --- Form Fields --- */
+form .form-control, form select, form input {
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    padding: 6px 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+form .form-control:focus,
+form select:focus,
+form input:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
+
+/* --- Labels --- */
+form label {
+    font-weight: 500;
+}
+
+/* --- Row spacing --- */
+.row.mb-3 {
+    margin-bottom: 1rem;
+}
+
+/* --- Separators --- */
+hr {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 1.5rem 0;
+}
+
+/* --- Buttons --- */
+.btn-success {
+    background-color: #16a34a;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+.btn-success:hover {
+    background-color: #15803d;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .row > div {
+        width: 100% !important;
+    }
+}
+</style>
+<div class="container mt-4">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Add Student</h4>
+        </div>
+
+        <div class="card-body">
+            {% if form.errors %}
+<div class="alert alert-danger">
+    <strong>Please correct the errors below.</strong>
+</div>
+{% endif %}
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- PERSONAL INFORMATION -->
+                <h5 class="mb-3 text-primary">Personal Information</h5>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.student_name.label_tag }}
+                        {{ form.student_name }}
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        {{ form.gender.label_tag }}
+                        {{ form.gender }}
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        {{ form.dob.label_tag }}
+                        {{ form.dob }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">{{ form.blood_group.label_tag }} {{ form.blood_group }}</div>
+                    <div class="col-md-4 mb-3">{{ form.nationality.label_tag }} {{ form.nationality }}</div>
+                    <div class="col-md-4 mb-3">{{ form.religion.label_tag }} {{ form.religion }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">{{ form.caste.label_tag }} {{ form.caste }}</div>
+                    <div class="col-md-6 mb-3">{{ form.community.label_tag }} {{ form.community }}</div>
+                </div>
+
+                <hr>
+
+                <!-- ADMISSION INFO -->
+                <h5 class="mb-3 text-primary">Admission Details</h5>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">{{ form.student_no.label_tag }} {{ form.student_no }}</div>
+                    <div class="col-md-4 mb-3">{{ form.admission_no.label_tag }} {{ form.admission_no }}</div>
+                    <div class="col-md-4 mb-3">{{ form.admission_date.label_tag }} {{ form.admission_date }}</div>
+                </div>
+
+                <div class="row">
+                    {{ form.admission_type.label_tag }}
+{{ form.admission_type }}
+<div class="text-danger">
+    {{ form.admission_type.errors }}
+</div>
+                    <div class="col-md-6 mb-3">{{ form.previous_school.label_tag }} {{ form.previous_school }}</div>
+                    <div class="row">
+    <div class="col-md-4 mb-3">{{ form.aadhaar_no.label_tag }} {{ form.aadhaar_no }}</div>
+    <div class="col-md-4 mb-3">{{ form.emis_no.label_tag }} {{ form.emis_no }}</div>
+</div>
+
+                </div>
+
+                <hr>
+
+                <!-- ADDRESS -->
+                <h5 class="mb-3 text-primary">Address</h5>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">{{ form.house_no.label_tag }} {{ form.house_no }}</div>
+                    <div class="col-md-4 mb-3">{{ form.street.label_tag }} {{ form.street }}</div>
+                    <div class="col-md-4 mb-3">{{ form.town.label_tag }} {{ form.town }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">{{ form.city.label_tag }} {{ form.city }}</div>
+                    <div class="col-md-4 mb-3">{{ form.state.label_tag }} {{ form.state }}</div>
+                    <div class="col-md-4 mb-3">{{ form.district.label_tag }} {{ form.district }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">{{ form.pincode.label_tag }} {{ form.pincode }}</div>
+                </div>
+                <div class="row">
+    <div class="col-md-6 mb-3">
+        {{ form.medical_conditions.label_tag }}
+        {{ form.medical_conditions }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        {{ form.emergency_contact_name.label_tag }}
+        {{ form.emergency_contact_name }}
+    </div>
+    <div class="col-md-6 mb-3">
+        {{ form.emergency_contact_no.label_tag }}
+        {{ form.emergency_contact_no }}
+    </div>
+</div>
+
+
+                <hr>
+
+                <!-- PARENTS -->
+                <h5 class="mb-3 text-primary">Parents / Guardian</h5>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        {{ form.father_name.label_tag }} {{ form.father_name }}
+    </div>
+    <div class="col-md-4 mb-3">
+        {{ form.father_occupation.label_tag }} {{ form.father_occupation }}
+    </div>
+    <div class="col-md-4 mb-3">
+        {{ form.father_contact.label_tag }} {{ form.father_contact }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        {{ form.father_email.label_tag }} {{ form.father_email }}
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        {{ form.mother_name.label_tag }} {{ form.mother_name }}
+    </div>
+    <div class="col-md-4 mb-3">
+        {{ form.mother_occupation.label_tag }} {{ form.mother_occupation }}
+    </div>
+    <div class="col-md-4 mb-3">
+        {{ form.mother_contact.label_tag }} {{ form.mother_contact }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        {{ form.mother_email.label_tag }} {{ form.mother_email }}
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        {{ form.guardian_name.label_tag }} {{ form.guardian_name }}
+    </div>
+    <div class="col-md-4 mb-3">
+        {{ form.guardian_relation.label_tag }} {{ form.guardian_relation }}
+    </div>
+    <div class="col-md-4 mb-3">
+        {{ form.guardian_contact.label_tag }} {{ form.guardian_contact }}
+    </div>
+</div>
+
+
+                <div class="text-end mt-4">
+                    <button class="btn btn-success px-4">Save Student</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<script>
+document.getElementById("id_state").addEventListener("change", function () {
+    const stateId = this.value;
+
+    fetch(`/ajax/load-districts/?state_id=${stateId}`)
+        .then(response => response.json())
+        .then(data => {
+            let districtSelect = document.getElementById("id_district");
+            districtSelect.innerHTML = '<option value="">Select District</option>';
+
+            data.forEach(function (district) {
+                districtSelect.innerHTML +=
+                    `<option value="${district.district_id}">
+                        ${district.district_name}
+                     </option>`;
+            });
+        });
+});
+document.getElementById("id_admission_type").addEventListener("change", function(){
+    let prevSchool = document.getElementById("id_previous_school").parentElement;
+
+    if(this.value === "TRANSFER"){
+        prevSchool.style.display = "block";
+    } else {
+        prevSchool.style.display = "none";
+    }
+})
+</script>
+{% endblock %}

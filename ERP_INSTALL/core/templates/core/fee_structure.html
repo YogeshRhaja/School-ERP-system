@@ -1,0 +1,142 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<style>
+/* Page Title */
+h3 {
+    color: #4f46e5;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Add Button */
+.btn-primary {
+    background-color: #4f46e5;
+    color: white;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 8px 18px;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #4338ca;
+}
+
+/* Table Styling */
+.table {
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.table th {
+    background-color: #f3f4f6;
+    font-weight: 600;
+    color: #374151;
+    text-align: left;
+}
+
+.table td {
+    color: #1f2937;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #e5e7eb;
+}
+
+/* Row hover effect */
+.table-hover tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+/* Action Buttons */
+.btn-warning {
+    background-color: #f59e0b;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 12px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-warning:hover {
+    background-color: #d97706;
+}
+
+.btn-danger {
+    background-color: #dc2626;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 12px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-danger:hover {
+    background-color: #b91c1c;
+}
+
+/* Inline form buttons */
+form {
+    display: inline;
+}
+</style>
+<h3>Fee Structure List</h3>
+
+<a href="{% url 'add_fee_structure' %}" class="btn btn-primary mb-3">
+    Add Fee Structure
+</a>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Academic Year</th>
+            <th>Class</th>
+            <th>Term</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for fee in fees %}
+        <tr>
+            <td>{{ fee.academic_year }}</td>
+            <td>{{ fee.school_class }}</td>
+            <td>{{ fee.term }}</td>
+            <td>{{ fee.category }}</td>
+            <td>{{ fee.amount }}</td>
+            <td>
+                <!-- Edit Icon -->
+                <a href="{% url 'edit_fee_structure' fee.id %}"
+                   class="btn btn-outline-primary btn-sm"
+                   title="Edit">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+
+                <!-- Delete Icon -->
+                <form action="{% url 'delete_fee_structure' fee.id %}"
+                      method="post"
+                      style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="btn btn-outline-danger btn-sm"
+                            onclick="return confirm('Are you sure you want to delete this fee structure?');"
+                            title="Delete">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<!-- Font Awesome CDN (if not already included in base.html) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+{% endblock %}

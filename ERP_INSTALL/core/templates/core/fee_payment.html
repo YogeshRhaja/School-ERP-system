@@ -1,0 +1,417 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<style>
+/* GLOBAL STYLING */
+* {
+    box-sizing: border-box;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.page-wrapper {
+    padding: 20px;
+    background: #f4f6fb;
+    min-height: 100vh;
+}
+
+/* PAGE TITLE */
+h3 {
+    margin-bottom: 25px;
+    color: #4f46e5;
+    font-weight: 600;
+}
+
+/* FILTER SECTION */
+.filters {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-control {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    min-width: 220px;
+    transition: all 0.2s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px rgba(79,70,229,0.15);
+}
+
+/* MAIN LAYOUT */
+.main-container {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
+}
+
+/* STUDENT PANEL */
+.student-panel {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    overflow: hidden;
+}
+
+.student-panel h4 {
+    margin: 0;
+    padding: 14px 16px;
+    background: #4f46e5;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* STUDENT LIST */
+#student_list {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.student-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f1f1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    color: #1f2937;
+}
+
+.student-item:hover {
+    background: #eef2ff;
+}
+
+.student-item.active {
+    background: #4f46e5;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Add student icon */
+.student-item::before {
+    content: "\f007"; /* Font Awesome user icon */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: #4f46e5;
+}
+
+/* ACTIVE STUDENT ICON COLOR */
+.student-item.active::before {
+    color: #ffffff;
+}
+
+/* FEES PANEL */
+.fees-panel {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    padding: 20px;
+}
+
+.fees-panel h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+/* SCROLLBAR */
+#student_list::-webkit-scrollbar {
+    width: 6px;
+}
+
+#student_list::-webkit-scrollbar-thumb {
+    background: #c7c7c7;
+    border-radius: 3px;
+}
+
+/* NO STUDENTS MESSAGE */
+#student_list p {
+    padding: 10px;
+    color: #6b7280;
+    font-style: italic;
+}
+</style>
+
+<!-- Font Awesome CDN for student icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<h3>Fee Payment</h3>
+
+<div class="filters">
+
+<select id="year" class="form-control">
+<option value="">Select Academic Year</option>
+
+{% for y in years %}
+<option value="{{ y.year_id }}">{{ y.year_name }}</option>
+{% endfor %}
+
+</select>
+
+<select id="class" class="form-control">
+<option value="">Select Class</option>
+
+{% for c in classes %}
+<option value="{{ c.id }}">{{ c.class_name }}</option>
+{% endfor %}
+
+</select>
+
+</div>
+
+
+<div class="main-container">
+
+<div class="student-panel">
+
+<h4>Students</h4>
+
+<div id="student_list"></div>
+
+</div>
+
+
+<div class="fees-panel">
+
+<h4>Fees Details</h4>
+
+<div id="fees_area"></div>
+
+</div>
+
+</div>
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+.page-wrapper{
+    padding:20px;
+    background:#f4f6fb;
+    min-height:100%;
+}
+/* PAGE TITLE */
+
+h3{
+    margin-bottom:20px;
+    color:#1f2937;
+    font-weight:600;
+}
+
+/* FILTER SECTION */
+
+.filters{
+    background:#ffffff;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.06);
+    display:flex;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.form-control{
+    padding:10px 12px;
+    border-radius:6px;
+    border:1px solid #d1d5db;
+    font-size:14px;
+    min-width:220px;
+    transition:0.2s;
+}
+
+.form-control:focus{
+    outline:none;
+    border-color:#4f46e5;
+    box-shadow:0 0 0 2px rgba(79,70,229,0.15);
+}
+
+/* MAIN LAYOUT */
+
+.main-container{
+    display:grid;
+    grid-template-columns:320px 1fr;
+    gap:20px;
+}
+
+/* STUDENT PANEL */
+
+.student-panel{
+    background:#ffffff;
+    border-radius:10px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.06);
+    overflow:hidden;
+}
+
+.student-panel h4{
+    margin:0;
+    padding:14px 16px;
+    background:#4f46e5;
+    color:white;
+    font-size:15px;
+    font-weight:500;
+}
+
+/* STUDENT LIST */
+
+#student_list{
+    max-height:500px;
+    overflow-y:auto;
+}
+
+.student-item{
+    padding:12px 16px;
+    border-bottom:1px solid #f1f1f1;
+    cursor:pointer;
+    transition:all 0.2s ease;
+    font-size:14px;
+}
+
+.student-item:hover{
+    background:#eef2ff;
+}
+
+.student-item.active{
+    background:#4f46e5;
+    color:#ffffff;
+    font-weight:600;
+}
+
+/* FEES PANEL */
+
+.fees-panel{
+    background:#ffffff;
+    border-radius:10px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.06);
+    padding:20px;
+}
+
+.fees-panel h4{
+    margin-top:0;
+    margin-bottom:15px;
+    font-size:16px;
+    font-weight:600;
+    color:#1f2937;
+}
+
+/* SCROLLBAR */
+
+#student_list::-webkit-scrollbar{
+    width:6px;
+}
+
+#student_list::-webkit-scrollbar-thumb{
+    background:#c7c7c7;
+    border-radius:3px;
+}
+
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+$(document).ready(function(){
+
+function loadStudents(){
+
+var year=$("#year").val()
+var class_id=$("#class").val()
+
+if(!year || !class_id) return
+
+$.ajax({
+
+url:"{% url 'load_students' %}",
+
+data:{
+year:year,
+class_id:class_id
+},
+
+success:function(data){
+
+$("#student_list").empty()
+
+if(data.length===0){
+$("#student_list").html("<p>No students found</p>")
+return
+}
+
+data.forEach(function(st){
+
+$("#student_list").append(
+
+`<div class="student-item" data-id="${st.id}">
+${st.name}
+</div>`
+
+)
+
+})
+
+}
+
+})
+
+}
+
+
+function loadFees(enrollment_id){
+
+$.ajax({
+
+url:"{% url 'load_fees' %}",
+
+data:{
+enrollment_id:enrollment_id
+},
+
+success:function(data){
+
+$("#fees_area").html(data.html)
+
+}
+
+})
+
+}
+
+
+$("#year").change(function(){
+if($("#class").val()) loadStudents()
+})
+
+$("#class").change(function(){
+if($("#year").val()) loadStudents()
+})
+
+
+$(document).on("click",".student-item",function(){
+
+$(".student-item").removeClass("active")
+
+$(this).addClass("active")
+
+var enrollment_id=$(this).data("id")
+
+loadFees(enrollment_id)
+
+})
+
+})
+
+</script>
+{% endblock %}
